@@ -20,6 +20,7 @@ app.get('/', (req, res) => {
 });
 
 // Handle the file upload
+//converts white background to transparent
 app.post('/upload', upload.single('image'), async (req, res) => {
   try {
     // Read the uploaded image using Jimp
@@ -51,7 +52,7 @@ app.post('/upload', upload.single('image'), async (req, res) => {
     // res.json({ imagePath: outputPath });
     console.log(__dirname+'/' + outputPath)
 
-    res.sendFile(__dirname+'/' + outputPath);
+    res.download(__dirname+'/' + outputPath);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'An error occurred' });
@@ -64,6 +65,7 @@ app.post('/upload', upload.single('image'), async (req, res) => {
 // ...
 
 // Handle the file upload
+// crops the transparent background
 app.post('/upload2', upload.single('image'), async (req, res) => {
     try {
       // Read the uploaded image using Jimp
@@ -84,7 +86,7 @@ app.post('/upload2', upload.single('image'), async (req, res) => {
         
   
       // Return the cropped image path
-      res.sendFile(__dirname+'/' + outputPath);
+      res.download(__dirname+'/' + outputPath);
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'An error occurred' });
