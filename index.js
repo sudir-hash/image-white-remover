@@ -90,7 +90,7 @@ app.post('/upload2', upload.single('image'), async (req, res) => {
       });
   
       // Return the cropped image path
-      res.sendFile(__dirname+'/' + outputPath);
+      res.download(__dirname+'/' + outputPath);
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'An error occurred' });
