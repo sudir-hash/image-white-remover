@@ -2,7 +2,8 @@
 const express = require('express');
 const multer = require('multer');
 const Jimp = require('jimp');
-const gm=require('gm');
+const trimImage   = require('trim-image');
+
 
 
 const app = express();
@@ -18,6 +19,15 @@ app.use(express.static('public'));
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
+
+
+function trim(outputPath){
+  trimImage(outputPath, outputPath,{ top: true, right: true, bottom: true, left: true },function(err){
+      if(err) console.error('error while trimming image', err);
+      console.log('Image trimmed!');
+    });
+    
+}
 
 // Handle the file upload
 app.post('/upload', upload.single('image'), async (req, res) => {
@@ -50,8 +60,7 @@ app.post('/upload', upload.single('image'), async (req, res) => {
     // Return the cropped image path
     // res.json({ imagePath: outputPath });
     console.log(__dirname+'/' + outputPath)
-
-    res.sendFile(__dirname+'/' + outputPath);
+    res.download(__dirname+'/' + outputPath);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'An error occurred' });
@@ -68,20 +77,17 @@ app.post('/upload2', upload.single('image'), async (req, res) => {
     try {
       // Read the uploaded image using Jimp
       const image = await Jimp.read(req.file.path);
+
+      image.autocrop();
+
       // Save the cropped image
       const outputPath = `uploads/cropped_${req.file.filename}.png`;
-
       await image.writeAsync(outputPath);
 
-
-      gm(outputPath)
-      .trim()
-        .write(outputPath, function (err) { 
-            if (!err) console.log('done');
-            else console.log(err)
-        });
-        
-        
+      trimImage(outputPath, outputPath,{ top: true, right: true, bottom: true, left: true },function(err){
+        if(err) console.error('error while trimming image', err);
+        console.log('Image trimmed!');
+      });
   
       // Return the cropped image path
       res.sendFile(__dirname+'/' + outputPath);
