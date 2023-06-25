@@ -30,6 +30,7 @@ function trim(outputPath){
 }
 
 // Handle the file upload
+//converts white background to transparent
 app.post('/upload', upload.single('image'), async (req, res) => {
   try {
     // Read the uploaded image using Jimp
@@ -60,6 +61,10 @@ app.post('/upload', upload.single('image'), async (req, res) => {
     // Return the cropped image path
     // res.json({ imagePath: outputPath });
     console.log(__dirname+'/' + outputPath)
+<<<<<<< HEAD
+=======
+
+>>>>>>> c2916ae478233b6a5059994ebc24819cfb6139d3
     res.download(__dirname+'/' + outputPath);
   } catch (error) {
     console.error(error);
@@ -73,6 +78,7 @@ app.post('/upload', upload.single('image'), async (req, res) => {
 // ...
 
 // Handle the file upload
+// crops the transparent background
 app.post('/upload2', upload.single('image'), async (req, res) => {
     try {
       // Read the uploaded image using Jimp
