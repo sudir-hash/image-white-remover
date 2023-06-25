@@ -61,10 +61,6 @@ app.post('/upload', upload.single('image'), async (req, res) => {
     // Return the cropped image path
     // res.json({ imagePath: outputPath });
     console.log(__dirname+'/' + outputPath)
-<<<<<<< HEAD
-=======
-
->>>>>>> c2916ae478233b6a5059994ebc24819cfb6139d3
     res.download(__dirname+'/' + outputPath);
   } catch (error) {
     console.error(error);
